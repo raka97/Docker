@@ -14,6 +14,7 @@ RUN apt update
 RUN apt install libjasper1 libjasper-dev
 
 RUN cd /opt
+WORKDIR /opt
 RUN git clone https://github.com/Itseez/opencv.git
 RUN git clone https://github.com/Itseez/opencv_contrib.git
 
@@ -25,12 +26,13 @@ RUN make -j16
 RUN make install
 RUN ldconfig
 RUN cd ~
-
+WORKDIR ~
 RUN cp /usr/local/lib/pkgconfig/opencv4.pc  /usr/lib/x86_64-linux-gnu/pkgconfig/opencv.pc
 RUN pkg-config --modversion opencv
 
 RUN git clone https://github.com/AlexeyAB/darknet.git
 RUN cd darknet
+WORKDIR ~/darknet
 RUN sed -i 's/OPENCV=0/OPENCV=1/' Makefile
 RUN sed -i 's/GPU=0/GPU=1/' Makefile
 RUN sed -i 's/CUDNN=0/CUDNN=1/' Makefile
