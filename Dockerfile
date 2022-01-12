@@ -13,32 +13,32 @@ RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security ma
 RUN apt update
 RUN apt install libjasper1 libjasper-dev
 
-RUN cd /opt
-WORKDIR /opt
-RUN git clone https://github.com/Itseez/opencv.git
-RUN git clone https://github.com/Itseez/opencv_contrib.git
+#RUN cd /opt
+#WORKDIR /opt
+RUN cd /opt && git clone https://github.com/Itseez/opencv.git /opt
+RUN cd /opt && git clone https://github.com/Itseez/opencv_contrib.git /opt
 
-RUN cd opencv
-RUN mkdir release
-RUN cd release
-WORKDIR /opt/opencv/release
-RUN cmake -D BUILD_TIFF=ON -D WITH_CUDA=ON -D WITH_CUDNN=ON -D ENABLE_AVX=OFF -D WITH_OPENGL=OFF -D WITH_OPENCL=OFF -D WITH_IPP=OFF -D WITH_TBB=ON -D BUILD_TBB=ON -D WITH_EIGEN=OFF -D WITH_V4L=OFF -D WITH_VTK=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D OPENCV_GENERATE_PKGCONFIG=ON -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib/modules /opt/opencv/
-RUN make -j16
-RUN make install
-RUN ldconfig
-RUN cd ~
-WORKDIR ~
-RUN cp /usr/local/lib/pkgconfig/opencv4.pc  /usr/lib/x86_64-linux-gnu/pkgconfig/opencv.pc
-RUN pkg-config --modversion opencv
+#RUN cd opencv
+RUN cd /opt/opencv && mkdir release
+#RUN cd release
+#WORKDIR /opt/opencv/release
+RUN cd /opt/opencv/release && cmake -D BUILD_TIFF=ON -D WITH_CUDA=ON -D WITH_CUDNN=ON -D ENABLE_AVX=OFF -D WITH_OPENGL=OFF -D WITH_OPENCL=OFF -D WITH_IPP=OFF -D WITH_TBB=ON -D BUILD_TBB=ON -D WITH_EIGEN=OFF -D WITH_V4L=OFF -D WITH_VTK=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D OPENCV_GENERATE_PKGCONFIG=ON -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib/modules /opt/opencv/
+RUN cd /opt/opencv/release && make -j16
+RUN cd /opt/opencv/release && make install
+RUN cd /opt/opencv/release && ldconfig
+#RUN cd ~
+#WORKDIR ~
+RUN cd ~ && cp /usr/local/lib/pkgconfig/opencv4.pc  /usr/lib/x86_64-linux-gnu/pkgconfig/opencv.pc
+RUN cd ~ && pkg-config --modversion opencv
 
-RUN git clone https://github.com/AlexeyAB/darknet.git
-RUN cd darknet
-WORKDIR ~/darknet
-RUN sed -i 's/OPENCV=0/OPENCV=1/' Makefile
-RUN sed -i 's/GPU=0/GPU=1/' Makefile
-RUN sed -i 's/CUDNN=0/CUDNN=1/' Makefile
-RUN sed -i 's/CUDNN_HALF=0/CUDNN_HALF=1/' Makefile
-RUN sed -i 's/LIBSO=0/LIBSO=1/' Makefile
-RUN make 
-RUN wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
-RUN ./darknet detector test cfg/coco.data cfg/yolov4.cfg yolov4.weights data/dog.jpg
+RUN cd ~ && git clone https://github.com/AlexeyAB/darknet.git
+#RUN cd ~/darknet
+#WORKDIR darknet
+RUN cd ~/darknet && sed -i 's/OPENCV=0/OPENCV=1/' Makefile
+RUN cd ~/darknet && sed -i 's/GPU=0/GPU=1/' Makefile
+RUN cd ~/darknet && sed -i 's/CUDNN=0/CUDNN=1/' Makefile
+RUN cd ~/darknet && sed -i 's/CUDNN_HALF=0/CUDNN_HALF=1/' Makefile
+RUN cd ~/darknet && sed -i 's/LIBSO=0/LIBSO=1/' Makefile
+RUN cd ~/darknet && make 
+RUN cd ~/darknet && wget https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights
+RUN cd ~/darknet && ./darknet detector test cfg/coco.data cfg/yolov4.cfg yolov4.weights data/dog.jpg
