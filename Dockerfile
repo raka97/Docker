@@ -15,8 +15,8 @@ RUN apt install libjasper1 libjasper-dev
 
 #RUN cd /opt
 #WORKDIR /opt
-RUN cd /opt && git clone https://github.com/Itseez/opencv.git /opt
-RUN cd /opt && git clone https://github.com/Itseez/opencv_contrib.git /opt
+RUN cd /opt && git clone https://github.com/Itseez/opencv.git
+RUN cd /opt && git clone https://github.com/Itseez/opencv_contrib.git
 
 #RUN cd opencv
 RUN cd /opt/opencv && mkdir release
