@@ -21,6 +21,7 @@ RUN git clone https://github.com/Itseez/opencv_contrib.git
 RUN cd opencv
 RUN mkdir release
 RUN cd release
+WORKDIR /opt/opencv/release
 RUN cmake -D BUILD_TIFF=ON -D WITH_CUDA=ON -D WITH_CUDNN=ON -D ENABLE_AVX=OFF -D WITH_OPENGL=OFF -D WITH_OPENCL=OFF -D WITH_IPP=OFF -D WITH_TBB=ON -D BUILD_TBB=ON -D WITH_EIGEN=OFF -D WITH_V4L=OFF -D WITH_VTK=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D OPENCV_GENERATE_PKGCONFIG=ON -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib/modules /opt/opencv/
 RUN make -j16
 RUN make install
